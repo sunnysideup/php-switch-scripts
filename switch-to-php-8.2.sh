@@ -43,3 +43,5 @@ echo "* Switching CLI PHP to 8.2..."
 sudo update-alternatives --set php /usr/bin/php8.2 > /dev/null
 
 echo "* Switch to PHP 8.2 complete."
+
+php -v | grep PHP

@@ -42,3 +42,5 @@ echo "* Switching CLI PHP to 5.6..."
 sudo update-alternatives --set php /usr/bin/php5.6 > /dev/null
 
 echo "* Switch to PHP 5.6 complete."
+
+php -v | grep PHP

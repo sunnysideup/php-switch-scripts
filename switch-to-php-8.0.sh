@@ -43,3 +43,5 @@ echo "* Switching CLI PHP to 8.0..."
 sudo update-alternatives --set php /usr/bin/php8.0 > /dev/null
 
 echo "* Switch to PHP 8.0 complete."
+
+php -v | grep PHP

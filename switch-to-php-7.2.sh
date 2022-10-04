@@ -42,3 +42,5 @@ echo "* Switching CLI PHP to 7.2..."
 sudo update-alternatives --set php /usr/bin/php7.2 > /dev/null
 
 echo "* Switch to PHP 7.2 complete."
+
+php -v | grep PHP
