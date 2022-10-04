@@ -2,6 +2,7 @@
 
 echo "* Refreshing software repositories..."
 sudo apt-get update > /dev/null
+sudo apt-get update && sudo apt -y upgrade
 
 echo "* Installing prerequisite software packages..."
 sudo apt-get install -y software-properties-common > /dev/null
@@ -11,6 +12,15 @@ sudo add-apt-repository -y ppa:ondrej/php > /dev/null
 
 echo "* Refreshing software repositories..."
 sudo apt-get update > /dev/null
+
+echo "* reboot"
+sudo systemctl reboot
+
+echo "* run again"
+sudo apt update
+sudo apt install lsb-release ca-certificates apt-transport-https software-properties-common -y
+sudo add-apt-repository ppa:ondrej/php
+
 
 echo "* Installing PHP 5.6..."
 sudo apt-get install -y php5.6 php5.6-common php5.6-cli > /dev/null
