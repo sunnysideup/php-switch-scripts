@@ -33,13 +33,13 @@ sudo a2dismod php8.3> /dev/null
 
 ####################################
 
-echo "* Enabling Apache PHP 7.0 module..."
-sudo a2enmod php7.0 > /dev/null
+echo "* Enabling Apache PHP 8.1 module..."
+sudo a2enmod php8.1 > /dev/null
 
 echo "* Restarting Apache..."
 sudo service apache2 restart > /dev/null
 
-echo "* Switching CLI PHP to 7.0..."
-sudo update-alternatives --set php /usr/bin/php7.0 > /dev/null
+echo "* Switching CLI PHP to 8.1..."
+sudo update-alternatives --set php /usr/bin/php8.1 > /dev/null
 
-echo "* Switch to PHP 7.0 complete."
+echo "* Switch to PHP 8.1 complete."
