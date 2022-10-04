@@ -13,9 +13,6 @@ sudo add-apt-repository -y ppa:ondrej/php > /dev/null
 echo "* Refreshing software repositories..."
 sudo apt-get update > /dev/null
 
-echo "* reboot"
-sudo systemctl reboot
-
 echo "* run again"
 sudo apt update
 sudo apt install lsb-release ca-certificates apt-transport-https software-properties-common -y
