@@ -17,6 +17,8 @@ echo "* run again"
 sudo apt update
 sudo apt install lsb-release ca-certificates apt-transport-https software-properties-common -y
 sudo add-apt-repository ppa:ondrej/php
+sudo add-apt-repository ppa:ondrej/apache2
+sudo apt update
 
 
 echo "* Installing PHP 5.6..."
