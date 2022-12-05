@@ -63,7 +63,7 @@ sudo apt-get install -y php7.4-xml
 
 echo "* Installing PHP 8.0..."
 sudo apt-get install -y php8.0-fpm
-ssudo apt-get install -y php8.0-common
+sudo apt-get install -y php8.0-common
 sudo apt-get install -y php8.0-intl
 sudo apt-get install -y php8.0-snmp php-memcached php8.0-mysql
 sudo apt-get install -y php8.0-xml
