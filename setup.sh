@@ -120,9 +120,6 @@ sudo apt-get install -y php8.1-xml
 sudo apt-get install -y php8.1-xsl
 sudo apt-get install -y php8.1-zip
 
-sudo apt-get install -y php-memcached
-
-
 
 echo "* Installing additional PHP extensions..."
 sudo apt-get install -y php-memcache 
