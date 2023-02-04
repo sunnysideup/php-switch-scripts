@@ -46,3 +46,4 @@ echo "* Switch to PHP 5.6 complete."
 php -v | grep PHP
 
 sudo service apache2 restart
+sudo -u www-data php -v
