@@ -86,6 +86,19 @@ sudo apt-get install -y php8.1 php8.1-common php8.1-cli > /dev/null
 echo "* Installing PHP 8.1 extensions..."
 sudo apt-get install -y php8.1-bz2 php8.1-curl php8.1-intl php8.1-gd php8.1-json php8.1-mbstring php8.1-mysql php8.1-opcache php8.1-readline php8.1-soap php8.1-sqlite3 php8.1-tidy php8.1-xml php8.1-xsl php8.1-zip > /dev/null
 
+echo "* Installing PHP 8.2 extensions..."
+sudo apt-get install -y php8.0
+sudo apt-get install -y php8.0-fpm
+sudo apt-get install -y php8.0-common
+sudo apt-get install -y php8.0-cli
+sudo apt-get install -y php8.0-intl
+sudo apt-get install -y php8.0-snmp php-memcached php8.0-mysql
+sudo apt-get install -y php8.0-xml
+sudo apt-get install -y php8.0-intl
+sudo apt-get install -y php8.0-curl
+sudo apt-get install -y php8.0-mbstring
+
+
 
 echo "* Installing additional PHP extensions..."
 sudo apt-get install -y php-memcache php-memcached php-redis  > /dev/null
