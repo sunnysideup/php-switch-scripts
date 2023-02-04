@@ -43,3 +43,5 @@ sudo update-alternatives --set php /usr/bin/php7.1 > /dev/null
 echo "* Switch to PHP 7.1 complete."
 
 php -v | grep PHP
+sudo service apache2 restart
+sudo -u www-data php -v

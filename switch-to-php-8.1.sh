@@ -27,6 +27,14 @@ sudo a2dismod php8.1 > /dev/null
 
 echo "* Disabling Apache PHP 8.2 module..."
 sudo a2dismod php8.2 > /dev/null
+sudo a2dismod php8.2 > /dev/null
+sudo a2dismod php8.2 > /dev/null
+sudo a2dismod php8.2 > /dev/null
+sudo a2dismod php8.2 > /dev/null
+sudo a2dismod php8.2 > /dev/null
+sudo a2dismod php8.2 > /dev/null
+sudo a2dismod php8.2 > /dev/null
+sudo a2dismod php8.2 > /dev/null
 
 echo "* Disabling Apache PHP 8.3 module..."
 sudo a2dismod php8.3> /dev/null
@@ -45,3 +53,7 @@ sudo update-alternatives --set php /usr/bin/php8.1 > /dev/null
 echo "* Switch to PHP 8.1 complete."
 
 php -v | grep PHP
+
+
+sudo service apache2 restart
+sudo -u www-data php -v

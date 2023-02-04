@@ -44,4 +44,5 @@ sudo update-alternatives --set php /usr/bin/php8.3 > /dev/null
 
 echo "* Switch to PHP 8.3 complete."
 
-php -v | grep PHP
+sudo service apache2 restart
+sudo -u www-data php -v

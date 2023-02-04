@@ -133,11 +133,11 @@ sudo apt-get install -y php8.2-zip
 
 
 
- sudo a2enmod proxy_fcgi setenvif
+# sudo a2enmod proxy_fcgi setenvif
  
- sudo a2enconf php8.0-fpm
- sudo a2enconf php8.1-fpm
- sudo a2enconf php8.2-fpm
+# sudo a2enconf php8.0-fpm
+# sudo a2enconf php8.1-fpm
+# sudo a2enconf php8.2-fpm
 
  sudo service apache2 restart
  sudo apt autoremove
