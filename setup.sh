@@ -70,6 +70,7 @@ sudo apt-get install -y php7.4-tidy
 sudo apt-get install -y php7.4-xml
 sudo apt-get install -y php7.4-xsl
 sudo apt-get install -y php7.4-zip
+sudo apt-get install -y php7.4-bcmath
 
 
 echo "* Installing PHP 8.0 extensions..."
@@ -95,6 +96,7 @@ sudo apt-get install -y php8.0-tidy
 sudo apt-get install -y php8.0-xml
 sudo apt-get install -y php8.0-xsl
 sudo apt-get install -y php8.0-zip
+sudo apt-get install -y php8.0-bcmath
 
 
 echo "* Installing PHP 8.1 extensions..."
@@ -121,7 +123,7 @@ sudo apt-get install -y php8.1-tidy
 sudo apt-get install -y php8.1-xml
 sudo apt-get install -y php8.1-xsl
 sudo apt-get install -y php8.1-zip
-
+sudo apt-get install -y php8.1-bcmath
 
 
 
@@ -148,6 +150,7 @@ sudo apt-get install -y php8.2-soap
 sudo apt-get install -y php8.2-tidy 
 sudo apt-get install -y php8.2-xsl 
 sudo apt-get install -y php8.2-zip 
+sudo apt-get install -y php8.2-bcmath
 
 echo "* Installing additional PHP extensions..."
 sudo apt-get install -y php-memcache 
