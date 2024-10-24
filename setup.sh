@@ -152,6 +152,34 @@ sudo apt-get install -y php8.2-xsl
 sudo apt-get install -y php8.2-zip 
 sudo apt-get install -y php8.2-bcmath
 
+
+
+echo "* Installing PHP 8.3..."
+sudo apt-get install -y php8.3
+
+sudo apt-get install -y php8.3-common
+
+sudo apt-get install -y php8.3-fpm
+sudo apt-get install -y php8.3-cli
+sudo apt-get install -y php8.3-intl
+sudo apt-get install -y php8.3-snmp 
+sudo apt-get install -y php8.3-memcached 
+sudo apt-get install -y php8.3-mysql
+sudo apt-get install -y php8.3-xml
+sudo apt-get install -y php8.3-bz2 
+sudo apt-get install -y php8.3-curl 
+sudo apt-get install -y php8.3-gd 
+sudo apt-get install -y php8.3-json 
+sudo apt-get install -y php8.3-mbstring 
+sudo apt-get install -y php8.3-opcache 
+sudo apt-get install -y php8.3-readline 
+sudo apt-get install -y php8.3-soap 
+sudo apt-get install -y php8.3-tidy 
+sudo apt-get install -y php8.3-xsl 
+sudo apt-get install -y php8.3-zip 
+sudo apt-get install -y php8.3-bcmath
+
+
 echo "* Installing additional PHP extensions..."
 sudo apt-get install -y php-memcache 
 sudo apt-get install -y php-memcached 
