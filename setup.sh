@@ -18,7 +18,15 @@ php_extensions=("common" "bz2" "cli" "curl" "fpm" "gd" "intl" "json" "mbstring" 
 # Loop through PHP versions and install extensions
 for version in "${php_versions[@]}"; do
     echo "* Installing PHP $version and extensions..."
-    sudo apt-get install -y -q "php$version" "php$version-${php_extensions[*]}" > /dev/null
+    
+    # Build the package list for this PHP version
+    php_packages=()
+    for ext in "${php_extensions[@]}"; do
+        php_packages+=("php$version-$ext")
+    done
+    
+    # Install all packages for this PHP version in one command
+    sudo apt-get install -y -q "${php_packages[@]}" > /dev/null
 done
 
 # Install additional shared PHP extensions
