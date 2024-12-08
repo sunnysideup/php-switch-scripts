@@ -13,7 +13,7 @@ sudo apt-get update -q > /dev/null
 
 # Define PHP versions and extensions
 php_versions=("7.2" "7.4" "8.0" "8.1" "8.2" "8.3")
-php_extensions=("common" "bz2" "cli" "curl" "fpm" "gd" "intl" "json" "mbstring" "mysql" "opcache" "readline" "snmp" "soap" "sqlite3" "tidy" "xml" "xsl" "zip" "bcmath" "memcached")
+php_extensions=("common" "bz2" "cli" "curl" "fpm" "gd" "intl" "json" "mbstring" "mysql" "opcache" "readline" "snmp" "soap" "sqlite3" "tidy" "xml" "xsl" "zip" "bcmath" "memcached", "zip")
 
 # Loop through PHP versions and install extensions
 for version in "${php_versions[@]}"; do
