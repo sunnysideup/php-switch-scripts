@@ -12,8 +12,8 @@ sudo add-apt-repository -y ppa:ondrej/apache2 > /dev/null
 sudo apt-get update -q > /dev/null
 
 # Define PHP versions and extensions
-php_versions=("7.2" "7.4" "8.0" "8.1" "8.2" "8.3")
-php_extensions=("common" "bz2" "cli" "curl" "fpm" "gd" "intl" "json" "mbstring" "mysql" "opcache" "readline" "snmp" "soap" "sqlite3" "tidy" "xml" "xsl" "zip" "bcmath" "memcached", "zip")
+php_versions=("7.2" "7.4" "8.0" "8.1" "8.2" "8.3" "8.4")
+php_extensions=("common" "bz2" "cli" "curl" "fpm" "gd" "intl" "mbstring" "mysql" "opcache" "readline" "snmp" "soap" "sqlite3" "tidy" "xml" "xsl" "zip" "bcmath" "memcached" "zip")
 
 # Loop through PHP versions and install extensions
 for version in "${php_versions[@]}"; do
@@ -26,12 +26,15 @@ for version in "${php_versions[@]}"; do
     done
     
     # Install all packages for this PHP version in one command
+	echo "${php_packages[@]}"
     sudo apt-get install -y -q "${php_packages[@]}" > /dev/null
 done
 
 # Install additional shared PHP extensions
 echo "* Installing additional PHP extensions..."
 sudo apt-get install -y -q php-memcache php-memcached php-redis > /dev/null
+sudo apt-get install -y -q php7.2-json > /dev/null
+sudo apt-get install -y -q php7.4-json > /dev/null
 
 # Clean up
 echo "* Cleaning up..."
