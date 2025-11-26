@@ -18,15 +18,16 @@ php_extensions=("common" "bz2" "cli" "curl" "fpm" "gd" "intl" "mbstring" "mysql"
 # Loop through PHP versions and install extensions
 for version in "${php_versions[@]}"; do
     echo "* Installing PHP $version and extensions..."
-    
-    # Build the package list for this PHP version
+
+    # install matching Apache module
+    sudo apt-get install -y -q "libapache2-mod-php$version" > /dev/null
+
     php_packages=()
     for ext in "${php_extensions[@]}"; do
         php_packages+=("php$version-$ext")
     done
-    
-    # Install all packages for this PHP version in one command
-	echo "${php_packages[@]}"
+
+    echo "${php_packages[@]}"
     sudo apt-get install -y -q "${php_packages[@]}" > /dev/null
 done
 
