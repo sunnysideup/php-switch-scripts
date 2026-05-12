@@ -48,5 +48,5 @@ sudo update-alternatives --set php /usr/bin/php8.0 >/dev/null
 
 echo "* Switch to PHP 8.0 complete."
 
-sudo service apache2 restart
+# sudo service apache2 restart ### can't do it too often!
 sudo -u www-data php -v

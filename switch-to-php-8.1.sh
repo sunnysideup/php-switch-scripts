@@ -50,5 +50,5 @@ echo "* Switch to PHP 8.1 complete."
 
 php -v | grep PHP
 
-sudo service apache2 restart
+# sudo service apache2 restart ### can't do it too often!
 sudo -u www-data php -v
