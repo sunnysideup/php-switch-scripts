@@ -9,11 +9,11 @@ Built for Ubuntu/Debian developers who juggle multiple projects across different
 ## Quick Start
 
 ```shell
-git clone [https://github.com/sunnysideup/php-switch-scripts.git](https://github.com/sunnysideup/php-switch-scripts/)
+git clone https://github.com/sunnysideup/php-switch-scripts.git
 cd php-switch
 sudo bash setup.sh
 cd -
-rm php-switch -rf
+rm ./php-switch -rf
 ```
 
 That's it. Every available PHP version will be installed and ready to use.
