@@ -3,58 +3,79 @@
 TARGET=$1
 
 if [ -z "$TARGET" ]; then
-	echo "Usage: php-switch <version>  (e.g. php-switch 8.3)"
-	exit 1
+    echo "Usage: php-switch <version>  (e.g. php-switch 8.3)"
+    exit 1
 fi
 
 # Validate that the requested PHP version is actually installed
 if [ ! -f "/usr/bin/php$TARGET" ]; then
-	echo "Error: PHP $TARGET does not appear to be installed (/usr/bin/php$TARGET not found)."
-	exit 1
+    echo "Error: PHP $TARGET does not appear to be installed (/usr/bin/php$TARGET not found)."
+    exit 1
 fi
 
 echo "* Switching to PHP $TARGET..."
 
+# Ensure Type=simple override is in place (fixes systemd notify issue)
+OVERRIDE_DIR="/etc/systemd/system/php${TARGET}-fpm.service.d"
+OVERRIDE_FILE="$OVERRIDE_DIR/override.conf"
+if [ ! -f "$OVERRIDE_FILE" ] || ! grep -q "Type=simple" "$OVERRIDE_FILE"; then
+    echo "  - Applying systemd Type=simple override for php$TARGET-fpm..."
+    sudo mkdir -p "$OVERRIDE_DIR"
+    sudo bash -c "cat > $OVERRIDE_FILE << EOF
+[Service]
+Type=simple
+EOF"
+    sudo systemctl daemon-reload
+fi
+
+# Ensure SNMP is disabled (causes startup hangs if MIBs are missing)
+if sudo phpdismod -v "$TARGET" snmp 2>/dev/null; then
+    echo "  - Disabled SNMP extension for php$TARGET"
+fi
+
 # Disable all active PHP Apache modules
-for mod in $(apache2ctl -M 2>/dev/null | grep -oP 'php\S+_module' | grep -oP 'php[\d.]+'); do
-	echo "  - Disabling Apache module: $mod"
-	sudo a2dismod "$mod" >/dev/null 2>&1
+for mod in $(apache2ctl -M 2>/dev/null | grep -oP 'php[\d.]+(?=_module)'); do
+    echo "  - Disabling Apache module: $mod"
+    sudo a2dismod "$mod" >/dev/null 2>&1
 done
 
 # Enable the target PHP Apache module
 echo "  - Enabling Apache module: php$TARGET"
 if ! sudo a2enmod "php$TARGET" >/dev/null 2>&1; then
-	echo "Error: Failed to enable php$TARGET Apache module. Is php$TARGET installed?"
-	exit 1
+    echo "Error: Failed to enable php$TARGET Apache module. Is php$TARGET installed?"
+    exit 1
 fi
 
 # Restart Apache
 echo "  - Restarting Apache..."
-sudo service apache2 restart >/dev/null
+if ! sudo service apache2 restart >/dev/null 2>&1; then
+    echo "Error: Apache failed to restart. Check: sudo journalctl -u apache2"
+    exit 1
+fi
 
 # Switch CLI
 echo "  - Switching CLI PHP to $TARGET..."
 sudo update-alternatives --set php "/usr/bin/php$TARGET" >/dev/null
 
-# Restart PHP-FPM if it's running
-if systemctl is-active --quiet "php$TARGET-fpm"; then
-	echo "  - Restarting php$TARGET-fpm..."
-	sudo systemctl restart "php$TARGET-fpm"
+# Stop all other PHP-FPM versions that are running
+for sock in /run/php/php*-fpm.sock; do
+    ver=$(echo "$sock" | grep -oP '[\d.]+')
+    if [ "$ver" != "$TARGET" ] && systemctl is-active --quiet "php${ver}-fpm"; then
+        echo "  - Stopping php${ver}-fpm..."
+        sudo systemctl stop "php${ver}-fpm" >/dev/null 2>&1
+    fi
+done
+
+# Start or restart target PHP-FPM
+echo "  - Starting php$TARGET-fpm..."
+sudo rm -f "/run/php/php${TARGET}-fpm.sock" "/run/php/php${TARGET}-fpm.pid"
+if ! sudo systemctl restart "php$TARGET-fpm" >/dev/null 2>&1; then
+    echo "Error: php$TARGET-fpm failed to start. Check: sudo journalctl -u php$TARGET-fpm"
+    exit 1
 fi
-
-for ver in 5.6 7.0 7.1 7.2 7.3 7.4 8.0 8.1 8.2 8.4 8.5; do
-	sudo mkdir -p /etc/systemd/system/php${ver}-fpm.service.d/
-	sudo bash -c "cat > /etc/systemd/system/php${ver}-fpm.service.d/override.conf << EOF
-[Service]
-Type=simple
-EOF"
-done
-sudo systemctl daemon-reload
-
-for ver in 5.6 7.0 7.1 7.2 7.3 7.4 8.0 8.1 8.2 8.4 8.5; do
-	sudo phpdismod -v ${ver} snmp 2>/dev/null
-done
 
 echo ""
 echo "* Done. Now running:"
 php -v | head -1
+echo ""
+sudo systemctl status "php$TARGET-fpm" --no-pager | grep "Active:"
