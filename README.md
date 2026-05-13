@@ -76,10 +76,10 @@ When you run `php-switch <version>` it:
 
 ## System Update
 
-A `system-update` script is also included that runs a full apt upgrade cycle and re-applies all PHP fixes afterwards (apt upgrades can occasionally reset service files):
+A `php-switch-system-update` script is also included that runs a full apt upgrade cycle and re-applies all PHP fixes afterwards (apt upgrades can occasionally reset service files):
 
 ```shell
-system-update
+php-switch-system-update
 ```
 
 ---
@@ -98,7 +98,7 @@ system-update
 |--------|----------|---------|
 | `setup.sh` | repo root | One-time install of all PHP versions |
 | `php-switch` | `/usr/local/bin/php-switch` | Switch active PHP version |
-| `system-update` | `/usr/local/bin/system-update` | Full system update with PHP fixes |
+| `php-switch-system-update` | `/usr/local/bin/php-switch-system-update` | Full system update with PHP fixes |
 
 ---
 
