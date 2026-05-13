@@ -1,0 +1,47 @@
+#!/bin/bash
+
+TARGET=$1
+
+if [ -z "$TARGET" ]; then
+	echo "Usage: php-switch <version>  (e.g. php-switch 8.3)"
+	exit 1
+fi
+
+# Validate that the requested PHP version is actually installed
+if [ ! -f "/usr/bin/php$TARGET" ]; then
+	echo "Error: PHP $TARGET does not appear to be installed (/usr/bin/php$TARGET not found)."
+	exit 1
+fi
+
+echo "* Switching to PHP $TARGET..."
+
+# Disable all active PHP Apache modules
+for mod in $(apache2ctl -M 2>/dev/null | grep -oP 'php\S+_module' | grep -oP 'php[\d.]+'); do
+	echo "  - Disabling Apache module: $mod"
+	sudo a2dismod "$mod" >/dev/null 2>&1
+done
+
+# Enable the target PHP Apache module
+echo "  - Enabling Apache module: php$TARGET"
+if ! sudo a2enmod "php$TARGET" >/dev/null 2>&1; then
+	echo "Error: Failed to enable php$TARGET Apache module. Is php$TARGET installed?"
+	exit 1
+fi
+
+# Restart Apache
+echo "  - Restarting Apache..."
+sudo service apache2 restart >/dev/null
+
+# Switch CLI
+echo "  - Switching CLI PHP to $TARGET..."
+sudo update-alternatives --set php "/usr/bin/php$TARGET" >/dev/null
+
+# Restart PHP-FPM if it's running
+if systemctl is-active --quiet "php$TARGET-fpm"; then
+	echo "  - Restarting php$TARGET-fpm..."
+	sudo systemctl restart "php$TARGET-fpm"
+fi
+
+echo ""
+echo "* Done. Now running:"
+php -v | head -1
