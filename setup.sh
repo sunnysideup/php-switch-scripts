@@ -41,9 +41,29 @@ run sudo apt-get update -q
 # rather than maintaining a hardcoded list
 # ─────────────────────────────────────────────
 log "* Detecting available PHP versions..."
-available_versions=$(apt-cache search --names-only '^php[0-9]+\.[0-9]+-cli$' \
+# Versions to skip — legacy, EOL, or not needed for our Silverstripe stack
+skip_versions=("5.6" "7.0" "7.2" "7.3" "8.0" "8.1")
+
+# Detect all available PHP versions from apt and filter out skipped ones
+log "* Detecting available PHP versions..."
+all_versions=$(apt-cache search --names-only '^php[0-9]+\.[0-9]+-cli$' \
     | grep -oP 'php\K[\d.]+' \
     | sort -V)
+
+available_versions=""
+for ver in $all_versions; do
+    skip=false
+    for s in "${skip_versions[@]}"; do
+        [ "$ver" = "$s" ] && skip=true && break
+    done
+    if [ "$skip" = false ]; then
+        available_versions="$available_versions $ver"
+    fi
+done
+available_versions=$(echo "$available_versions" | xargs)  # trim whitespace
+
+log "  Skipping: ${skip_versions[*]}"
+log "  Installing: $available_versions"
 
 if [ -z "$available_versions" ]; then
     err "No PHP versions found in apt. Did the PPA add correctly?"
