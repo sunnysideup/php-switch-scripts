@@ -42,6 +42,19 @@ if systemctl is-active --quiet "php$TARGET-fpm"; then
 	sudo systemctl restart "php$TARGET-fpm"
 fi
 
+for ver in 5.6 7.0 7.1 7.2 7.3 7.4 8.0 8.1 8.2 8.4 8.5; do
+	sudo mkdir -p /etc/systemd/system/php${ver}-fpm.service.d/
+	sudo bash -c "cat > /etc/systemd/system/php${ver}-fpm.service.d/override.conf << EOF
+[Service]
+Type=simple
+EOF"
+done
+sudo systemctl daemon-reload
+
+for ver in 5.6 7.0 7.1 7.2 7.3 7.4 8.0 8.1 8.2 8.4 8.5; do
+	sudo phpdismod -v ${ver} snmp 2>/dev/null
+done
+
 echo ""
 echo "* Done. Now running:"
 php -v | head -1
