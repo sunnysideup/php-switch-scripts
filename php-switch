@@ -95,4 +95,6 @@ sudo systemctl restart apache2
 echo -e "\n* Done. Now running:"
 php -v | head -1
 echo ""
+grep -r "SetHandler" /etc/apache2/sites-enabled/
+echo ""
 sudo systemctl status "php$TARGET-fpm" --no-pager | grep "Active:"
