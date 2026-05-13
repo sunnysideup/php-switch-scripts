@@ -165,7 +165,7 @@ done
 # Shared extensions (version-agnostic)
 # ─────────────────────────────────────────────
 log "* Installing shared PHP extensions..."
-run sudo apt-get install -y -q php-memcache php-memcached php-redis
+run sudo apt-get install -y -q php-memcached php-redis
 
 # ─────────────────────────────────────────────
 # Finalise
