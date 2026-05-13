@@ -1,0 +1,78 @@
+#!/bin/bash
+
+echo "================================================"
+echo "  System Update & Cleanup"
+echo "================================================"
+echo ""
+
+# Standard apt update/upgrade cycle
+echo "* Updating package lists..."
+sudo apt update
+
+echo ""
+echo "* Upgrading packages..."
+sudo apt upgrade -y
+
+echo ""
+echo "* Running full upgrade (kernel/dependency changes)..."
+sudo apt full-upgrade -y
+
+echo ""
+echo "* Removing unused packages..."
+sudo apt autoremove -y
+
+echo ""
+echo "* Cleaning package cache..."
+sudo apt clean
+
+echo ""
+echo "================================================"
+echo "  Post-Update PHP-FPM Fixes"
+echo "================================================"
+echo ""
+
+# Re-apply Type=simple and SNMP fixes for all installed PHP-FPM versions
+# (apt upgrades can reset service files)
+for fpm in /usr/sbin/php-fpm*; do
+    ver=$(echo "$fpm" | grep -oP '[\d.]+')
+    [ -z "$ver" ] && continue
+
+    echo "* Checking php$ver-fpm..."
+
+    # Re-apply Type=simple override
+    OVERRIDE_FILE="/etc/systemd/system/php${ver}-fpm.service.d/override.conf"
+    if [ ! -f "$OVERRIDE_FILE" ] || ! grep -q "Type=simple" "$OVERRIDE_FILE"; then
+        echo "  - Applying Type=simple override..."
+        sudo mkdir -p "/etc/systemd/system/php${ver}-fpm.service.d"
+        sudo bash -c "cat > $OVERRIDE_FILE << EOF
+[Service]
+Type=simple
+EOF"
+    else
+        echo "  - Type=simple override already in place"
+    fi
+
+    # Re-disable SNMP
+    sudo phpdismod -v "$ver" snmp 2>/dev/null && echo "  - SNMP disabled"
+
+done
+
+sudo systemctl daemon-reload
+echo ""
+echo "* Systemd reloaded."
+
+echo ""
+echo "================================================"
+echo "  PHP-FPM Service Status"
+echo "================================================"
+echo ""
+
+for fpm in /usr/sbin/php-fpm*; do
+    ver=$(echo "$fpm" | grep -oP '[\d.]+')
+    [ -z "$ver" ] && continue
+    status=$(systemctl is-active "php${ver}-fpm" 2>/dev/null)
+    echo "  php${ver}-fpm: $status"
+done
+
+echo ""
+echo "* All done. Consider rebooting if a kernel update was applied."
