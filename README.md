@@ -10,7 +10,7 @@ Built for Ubuntu/Debian developers who juggle multiple projects across different
 
 ```shell
 git clone https://github.com/sunnysideup/php-switch-scripts.git
-cd php-switch
+cd php-switch-scripts
 sudo bash setup.sh
 cd -
 rm ./php-switch -rf
