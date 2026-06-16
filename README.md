@@ -13,7 +13,7 @@ git clone https://github.com/sunnysideup/php-switch-scripts.git
 cd php-switch-scripts
 sudo bash setup.sh
 cd -
-rm ./php-switch -rf
+rm ./php-switch-scripts -rf
 ```
 
 That's it. Every available PHP version will be installed and ready to use.
