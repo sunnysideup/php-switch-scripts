@@ -7,13 +7,20 @@ if [ -z "$TARGET" ]; then
 	exit 1
 fi
 
+# 0. Nothing to do if already on the requested version
+CURRENT=$(php -r 'echo PHP_MAJOR_VERSION . "." . PHP_MINOR_VERSION;' 2>/dev/null)
+if [ "$CURRENT" = "$TARGET" ]; then
+	echo "Already on the right PHP version (PHP $TARGET)."
+	exit 0
+fi
+
 # 1. Validate Installation
 if [ ! -f "/usr/bin/php$TARGET" ]; then
 	echo "Error: PHP $TARGET does not appear to be installed (/usr/bin/php$TARGET not found)."
 	exit 1
 fi
 
-echo "* Switching to PHP $TARGET..."
+echo "* Switching from PHP ${CURRENT:-unknown} to PHP $TARGET..."
 
 # 2. Systemd Overrides & Extensions
 OVERRIDE_DIR="/etc/systemd/system/php${TARGET}-fpm.service.d"
@@ -97,4 +104,3 @@ php -v | head -1
 echo ""
 grep -r "SetHandler" /etc/apache2/sites-enabled/
 echo ""
-sudo systemctl status "php$TARGET-fpm" --no-pager | grep "Active:"
